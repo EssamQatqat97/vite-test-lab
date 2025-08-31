@@ -72,8 +72,8 @@
         !listController.users.total
       "
     >
-      Next &gt;</button
-    >.
+      Next &gt;
+    </button>
   </div>
 </template>
 
