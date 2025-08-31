@@ -1,17 +1,24 @@
 <template>
-  {{ selected }}
   <div class="container">
-    <div v-if="showSpinner"><Spinner /></div>
-    <div v-if="!users?.total">NO Data</div>
-    <div v-if="!showSpinner&& !!users!.data.length">
+    <div v-if="listController.showSpinner"><Spinner /></div>
+    <div v-if="!listController.showSpinner && !listController.users.total">
+      NO Data
+    </div>
+    <div
+      v-if="!listController.showSpinner && !!listController.users.data.length"
+    >
       <div class="flex items-center gap-3 p-2 border-b">
         <input
           type="checkbox"
-          v-model="allSelected"
-          @change="toggleAll"
-          :indeterminate="selectAllIndeterminate"
+          v-model="listController.allSelected"
+          @change="listController.toggleAll"
+          :indeterminate="listController.selectAllIndeterminate"
         />
-        <select v-model="action" @change="handleAction" id="bulk-action">
+        <select
+          v-model="listController.action"
+          @change="listController.handleAction"
+          id="bulk-action"
+        >
           <option value="SelectOption">More Options</option>
           <option value="SelectAll">Select all</option>
           <option value="DeselectAll">Deselect all</option>
@@ -20,7 +27,7 @@
         </select>
       </div>
       <div
-        v-for="(user,index ) in users!.data"
+        v-for="(user, index) in listController.users.data"
         :key="user.id"
         class="flex items-center gap-3 p-2 border-b"
         :class="{ 'blue-bg': index % 2 == 0 }"
@@ -29,9 +36,9 @@
           <!-- checkbox -->
           <input
             type="checkbox"
-            v-model="selected"
+            v-model="listController.selected"
             :value="user.id"
-            @change="updateSelected"
+            @change="listController.updateSelected"
           />
 
           <!-- full name -->
@@ -43,100 +50,42 @@
           <span class="text-gray-500"> ({{ user.age }} years) </span>
         </div>
         <div class="actions">
-          <a href="">edit</a>
-          <a href="">delete</a>
+          <span>edit</span>
+          <span @click="listController.singleItemDelete(user.id)">delete</span>
         </div>
       </div>
     </div>
   </div>
   <div>
-    <button @click="main('back')" :disabled="pageIndex == 1">Back</button>
     <button
-      @click="main('next')"
-      :disabled="Math.ceil(users?.total!/limit)==pageIndex"
+      @click="listController.main('back')"
+      :disabled="listController.pageIndex == 1 || listController.showSpinner"
     >
-      Next
+      &lt; Back
+    </button>
+    <button
+      @click="listController.main('next')"
+      :disabled="
+        Math.ceil(listController.users.total / listController.limit) ==
+          listController.pageIndex ||
+        listController.showSpinner ||
+        !listController.users.total
+      "
+    >
+      Next &gt;
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from "vue";
-import { fetchPersons } from "../../domain/classes/service-mocker";
-import type { TData } from "../../domain/contract/i-types";
+import { defineAsyncComponent, onMounted, ref } from "vue";
+import ListController from "../../domain/classes/users-list-controller";
 
-const users = ref<TData>();
+const listController = ref(new ListController(0, 5));
 
-const limit: number = 10; //items per page
-var pageIndex: number = 0;
-var showSpinner: boolean = false;
-
-const selected = ref<string[]>([]); // holds selected IDs
-const allSelected = ref(false); // checkbox in header
-const action = ref("SelectOption"); // dropdown action
-const selectAllIndeterminate = ref(false);
-
-async function main(step: string = "next") {
-  showSpinner = true;
-  setPageIndex(step);
-  const result: any = await fetchPersons(pageIndex, limit); //fetchPersons(pageIndex, limit);
-  users.value = result;
-  showSpinner = false;
-
-  // reset selections when page changes
-  selected.value = [];
-  allSelected.value = false;
-  selectAllIndeterminate.value = false;
-
-  return result;
-}
-
-const setPageIndex = (direction: string) => {
-  if (direction === "next") {
-    pageIndex += 1;
-  } else {
-    if (pageIndex != 1) pageIndex -= 1;
-  }
-};
-
-// toggle all from header checkbox
-function toggleAll() {
-  if (allSelected.value) {
-    selected.value = users.value?.data.map((u) => u.id) ?? [];
-  } else {
-    selected.value = [];
-  }
-}
-
-// handle dropdown actions
-function handleAction() {
-  if (action.value === "SelectAll") {
-    selected.value = users.value?.data.map((u) => u.id) ?? [];
-    allSelected.value = true;
-  } else if (action.value === "DeselectAll") {
-    selected.value = [];
-    allSelected.value = false;
-  } else if (action.value === "delete") {
-    //delete function from here
-    console.log("Delete selected users:", selected.value);
-  }
-  updateSelected();
-  action.value = "SelectOption";
-}
-
-const updateSelected = () => {
-  if (selected.value.length > 0 && selected.value.length < limit) {
-    selectAllIndeterminate.value = true;
-  } else if (selected.value.length == limit) {
-    selectAllIndeterminate.value = false;
-    allSelected.value = true;
-  } else {
-    selectAllIndeterminate.value = false;
-    allSelected.value = false;
-  }
-};
-
-main();
+onMounted(() => {
+  listController.value.main(); // fetch after component is mounted
+});
 
 const Spinner = defineAsyncComponent(() => import("../components/spinner.vue"));
 </script>
@@ -158,7 +107,7 @@ button {
   float: right;
   width: 20%;
 }
-.actions a {
+.actions span {
   margin-right: 30px;
   float: right;
   font-size: 14px;

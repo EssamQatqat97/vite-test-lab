@@ -9,31 +9,43 @@ axios.interceptors.request.use(async (config) => {
 
 // Delete person
 
-const deletePersons = (ids: string[] | string, delay = 1): Promise<boolean> => {
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      try {
-        // Normalize ids into an array
-        const idList = Array.isArray(ids) ? ids : [ids];
+// const deletePersons = (ids: string[] | string, delay = 1): Promise<boolean> => {
+//   return new Promise((resolve) => {
+//     setTimeout(async () => {
+//       try {
+//         // Normalize ids into an array
+//         const idList = Array.isArray(ids) ? ids : [ids];
 
-        // Run deletions in parallel
-        await Promise.all(
-          idList.map((id) =>
-            axios.delete(
-              `https://654b92025b38a59f28ef5698.mockapi.io/person/${id}`
-            )
-          )
-        );
+//         // Run deletions in parallel
+//         await Promise.all(
+//           idList.map((id) =>
+//             axios.delete(`http://localhost:3000/persons/${id}`)
+//           )
+//         );
 
-        resolve(true); // Success
-      } catch (error) {
-        console.error("Error deleting person(s):", error);
-        resolve(false); // Fail but resolve gracefully
-      }
-    }, delay);
-  });
+//         resolve(true); // Success
+//       } catch (error) {
+//         console.error("Error deleting person(s):", error);
+//         resolve(false); // Fail but resolve gracefully
+//       }
+//     }, delay);
+//   });
+// };
+
+const deletePersons = async (ids: string[]) => {
+  try {
+    const deletionPromises = ids.map((id) =>
+      axios.delete(`http://localhost:3000/persons/${id}`)
+    );
+    const responses = await Promise.all(deletionPromises);
+    console.log(`Successfully deleted ${responses.length} persons.`);
+    return responses.map((response) => response.status);
+  } catch (error) {
+    console.error("Error deleting one or more persons:", error);
+    return null;
+  }
 };
-
+//deletePersons(["1", "2"]);
 // delayed function
 const delayedSum = async (
   a: number,
