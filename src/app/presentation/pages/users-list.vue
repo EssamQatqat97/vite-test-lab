@@ -50,13 +50,17 @@
           <span class="text-gray-500"> ({{ user.age }} years) </span>
         </div>
         <div class="actions">
-          <span>edit</span>
-          <span @click="listController.singleItemDelete(user.id)">delete</span>
+          <RouterLink :to="{ name: 'Edit user', query: { id: user.id } }"
+            >Edit</RouterLink
+          >
+          <button @click="listController.singleItemDelete(user.id)">
+            Delete
+          </button>
         </div>
       </div>
     </div>
   </div>
-  <div>
+  <div class="navigation">
     <button
       @click="listController.main('back')"
       :disabled="listController.pageIndex == 1 || listController.showSpinner"
@@ -78,8 +82,9 @@
 </template>
 
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 import { defineAsyncComponent, onMounted, ref } from "vue";
-import ListController from "../../domain/classes/users-list-controller";
+import ListController from "../../domain/classes/list-controller";
 
 const listController = ref(new ListController(0, 5));
 
@@ -100,9 +105,6 @@ const Spinner = defineAsyncComponent(() => import("../components/spinner.vue"));
   text-align: left;
   height: 28px;
 }
-button {
-  margin-left: 15px;
-}
 .actions {
   float: right;
   width: 20%;
@@ -118,5 +120,21 @@ button {
 }
 .blue-bg {
   background-color: rgb(60, 63, 63);
+}
+.actions button,
+button:focus {
+  background: none; /* remove background */
+  border: none; /* remove borders */
+  color: #3498db; /* text color */
+  font-size: 16px; /* font size */
+  cursor: pointer; /* pointer cursor on hover */
+  padding: 0;
+  margin-left: 15px;
+}
+.actions button:hover {
+  color: red;
+}
+.navigation button {
+  margin-left: 15px;
 }
 </style>

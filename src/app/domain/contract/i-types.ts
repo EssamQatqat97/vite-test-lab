@@ -2,9 +2,9 @@ type TPerson = {
   id: string;
   firstName: string;
   lastName: string;
-  age: number;
+  age: number | string;
   email: string;
-  phone: string; // optional
+  phone: string | null; // optional
   address: {
     street: string;
     city: string;

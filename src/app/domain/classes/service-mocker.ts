@@ -7,31 +7,6 @@ axios.interceptors.request.use(async (config) => {
   return config;
 });
 
-// Delete person
-
-// const deletePersons = (ids: string[] | string, delay = 1): Promise<boolean> => {
-//   return new Promise((resolve) => {
-//     setTimeout(async () => {
-//       try {
-//         // Normalize ids into an array
-//         const idList = Array.isArray(ids) ? ids : [ids];
-
-//         // Run deletions in parallel
-//         await Promise.all(
-//           idList.map((id) =>
-//             axios.delete(`http://localhost:3000/persons/${id}`)
-//           )
-//         );
-
-//         resolve(true); // Success
-//       } catch (error) {
-//         console.error("Error deleting person(s):", error);
-//         resolve(false); // Fail but resolve gracefully
-//       }
-//     }, delay);
-//   });
-// };
-
 const deletePersons = async (ids: string[]) => {
   try {
     const deletionPromises = ids.map((id) =>
@@ -45,7 +20,24 @@ const deletePersons = async (ids: string[]) => {
     return null;
   }
 };
-//deletePersons(["1", "2"]);
+
+//create person function
+const createPerson = async (person: TPerson) => {
+  person.id = Math.ceil(Math.random() * 10).toString();
+  let now = new Date();
+  person.createdAt = now.toISOString();
+  try {
+    const response = await axios.post("http://localhost:3000/persons", {
+      ...person,
+      createdAt: new Date().toISOString(),
+    });
+    return response.data; // returns the new person with id assigned by json-server
+  } catch (error) {
+    console.error("Error creating person:", error);
+    return null;
+  }
+};
+
 // delayed function
 const delayedSum = async (
   a: number,
@@ -59,25 +51,6 @@ const delayedSum = async (
   });
 };
 
-// Create new USER
-
-const addPerson = (person: TPerson, delay = 1): Promise<TPerson | null> => {
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      try {
-        const response = await axios.post<TPerson>(
-          "https://654b92025b38a59f28ef5698.mockapi.io/person",
-          person
-        );
-        resolve(response.data); // return the created person
-      } catch (error) {
-        console.error("Error adding person:", error);
-        resolve(null); // return null on error
-      }
-    }, delay);
-  });
-};
-
 //update person
 const editPerson = (
   id: string,
@@ -88,7 +61,7 @@ const editPerson = (
     setTimeout(async () => {
       try {
         const response = await axios.put<TPerson>(
-          `https://654b92025b38a59f28ef5698.mockapi.io/person/${id}`,
+          `http://localhost:3000/persons/${id}`,
           updates
         );
         resolve(response.data); // return updated person
@@ -115,4 +88,24 @@ const fetchPersons = async (page = 1, limit = 10) => {
     return { data: [], total: 0 };
   }
 };
-export { fetchPersons, deletePersons, addPerson, editPerson, delayedSum };
+
+// fetch one user
+const fetchPerson = async (id: string) => {
+  try {
+    const response = await axios.get(`http://localhost:3000/persons/${id}`);
+    // Return the single person object
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching person with ID ${id}:`, error);
+    return null; // Return null or an appropriate fallback value
+  }
+};
+
+export {
+  fetchPersons,
+  fetchPerson,
+  deletePersons,
+  editPerson,
+  delayedSum,
+  createPerson,
+};

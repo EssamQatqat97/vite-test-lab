@@ -1,7 +1,5 @@
-import {
-  fetchPersons,
-  deletePersons,
-} from "../../domain/classes/service-mocker";
+import { fetchPersons, deletePersons } from "./service-mocker";
+import type { IListController } from "../contract/i-list-controller ";
 import type { TData } from "../contract/i-types";
 
 export const props = {
@@ -9,13 +7,13 @@ export const props = {
   pageIndex: { type: Number, default: 1 },
 };
 
-export default class ListController {
+export default class ListController implements IListController {
   users: TData;
   showSpinner: boolean;
 
-  selected: string[] = []; // holds selected IDs
-  allSelected: boolean = false; // checkbox in header
-  action: string = "SelectOption"; // dropdown action
+  selected: string[]; // holds selected IDs
+  allSelected: boolean; // checkbox in header
+  action: string; // dropdown action
   selectAllIndeterminate: boolean = false;
 
   pageIndex: number;
@@ -23,6 +21,9 @@ export default class ListController {
   constructor(pageIndex: number, limit: number) {
     this.pageIndex = pageIndex <= 0 ? 1 : pageIndex;
     this.limit = limit;
+    this.selected = [];
+    this.allSelected = false;
+    this.action = "SelectOption";
     this.users = { data: [], total: 0 };
     this.showSpinner = true;
     //this.main();
