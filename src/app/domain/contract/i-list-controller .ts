@@ -9,6 +9,7 @@ interface IListController {
   selectAllIndeterminate: boolean;
   pageIndex: number;
   limit: number;
+  getFullName(fname: string, lname: string): string;
 }
 
 export type { IListController };

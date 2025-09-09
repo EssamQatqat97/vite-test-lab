@@ -1,5 +1,5 @@
 <template>
-  <user-form :is-new="false" :id="$route.query.id" />
+  <user-form :form-title="'Edit User'" :is-new="false" :id?="$route.query.id" />
 </template>
 
 <script setup lang="ts">

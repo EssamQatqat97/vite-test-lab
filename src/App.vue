@@ -10,7 +10,7 @@
 import { defineAsyncComponent } from "vue";
 
 const MainMenu = defineAsyncComponent(
-  () => import("./app/presentation/components/menu.vue")
+  () => import("./app/presentation/components/navigator.vue")
 );
 </script>
 <style lang="css" scoped>

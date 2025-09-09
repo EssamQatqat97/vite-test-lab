@@ -43,19 +43,27 @@
 
           <!-- full name -->
           <span class="font-medium">
-            {{ user.firstName }} {{ user.lastName }}
+            {{ listController.getFullName(user.firstName, user.lastName) }}
           </span>
 
           <!-- age -->
           <span class="text-gray-500"> ({{ user.age }} years) </span>
         </div>
         <div class="actions">
-          <RouterLink :to="{ name: 'Edit user', query: { id: user.id } }"
+          <RouterLink
+            :to="{ name: 'Edit user', query: { id: user.id } }"
+            class="page-link"
             >Edit</RouterLink
           >
           <button @click="listController.singleItemDelete(user.id)">
             Delete
           </button>
+          <RouterLink
+            :to="{ name: 'User Info', query: { id: user.id } }"
+            class="page-link"
+          >
+            <i class="fa-solid fa-circle-info"></i>
+          </RouterLink>
         </div>
       </div>
     </div>
@@ -107,34 +115,39 @@ const Spinner = defineAsyncComponent(() => import("../components/spinner.vue"));
 }
 .actions {
   float: right;
-  width: 20%;
+  width: 25%;
 }
 .actions span {
-  margin-right: 30px;
+  /* margin-right: 30px; */
   float: right;
   font-size: 14px;
 }
 .left-column {
   float: left;
-  width: 80%;
+  width: 75%;
 }
 .blue-bg {
   background-color: rgb(60, 63, 63);
 }
-.actions button,
-button:focus {
+.page-link {
+  margin-left: 10%;
+}
+.actions button {
   background: none; /* remove background */
   border: none; /* remove borders */
   color: #3498db; /* text color */
   font-size: 16px; /* font size */
   cursor: pointer; /* pointer cursor on hover */
   padding: 0;
-  margin-left: 15px;
+  margin-left: 10%;
 }
 .actions button:hover {
   color: red;
 }
 .navigation button {
   margin-left: 15px;
+}
+.font-medium {
+  margin-left: 4%;
 }
 </style>

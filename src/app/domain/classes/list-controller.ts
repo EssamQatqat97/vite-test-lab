@@ -18,7 +18,7 @@ export default class ListController implements IListController {
 
   pageIndex: number;
   limit: number;
-  constructor(pageIndex: number, limit: number) {
+  constructor(pageIndex: number = 1, limit: number = 5) {
     this.pageIndex = pageIndex <= 0 ? 1 : pageIndex;
     this.limit = limit;
     this.selected = [];
@@ -41,6 +41,8 @@ export default class ListController implements IListController {
     this.selectAllIndeterminate = false;
   }
   setPageIndex(direction: string) {
+    console.log(direction);
+
     if (direction === "next") {
       this.pageIndex += 1;
     } else if (direction === "back") {
@@ -129,5 +131,9 @@ export default class ListController implements IListController {
       this.selectAllIndeterminate = false;
       this.allSelected = false;
     }
+  }
+
+  getFullName(fname: string, lname: string) {
+    return `${fname} ${lname}`;
   }
 }

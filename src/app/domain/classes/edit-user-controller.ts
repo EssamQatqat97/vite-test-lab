@@ -32,7 +32,7 @@ export default class CreateUserController implements ICreateUserController {
       updatedAt: "",
     };
   }
-  async getPersonForEdit(personID: string) {
+  async getPersonData(personID: string) {
     this.isBusy = true;
     const result = await fetchPerson(personID); //fetchPersons(pageIndex, limit);
     //this.user = result;

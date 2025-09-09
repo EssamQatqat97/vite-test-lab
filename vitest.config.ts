@@ -17,7 +17,7 @@ export default defineConfig({
     //exclude:['./src/_tests_/fileII.test.ts"'],
     //setupFiles: [ "./src/_tests_/fileII.test.ts","./src/external.demo.two.ts","./src/external.demo.one.ts","./src/_tests_/fileI.spec.ts"],
     css: true,
-    testTimeout: 3000,
+    // testTimeout: 3000,
     reporters: reporterSet, // ['tap'] ['dot'] ['json'] ['junit'] ['default']['verbose']
   },
 });

@@ -1,5 +1,4 @@
 <template>
-  {{ $route.query.id }}
   <user-form :is-new="true" :form-title="'Create new USER'" />
 </template>
 

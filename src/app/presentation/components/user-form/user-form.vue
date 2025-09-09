@@ -120,7 +120,7 @@
       <div class="pt-4">
         <button
           v-if="isNew"
-          @click="createPerson"
+          @click="createUserController.createNewPerson(person)"
           type="submit"
           :disabled="createUserController.isBusy"
           class="w-full flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
@@ -129,7 +129,17 @@
         </button>
         <button
           v-else
-          @click="editPerson"
+          @click="
+            async () => {
+              try {
+                await createUserController.editPerson(personID!, person);
+                console.log('update complete successfully');
+                router.push('/');
+              } catch (error) {
+                console.log('Update is incomplete du to', error);
+              }
+            }
+          "
           type="submit"
           :disabled="createUserController.isBusy"
           class="w-full flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
@@ -146,6 +156,7 @@ import { onMounted, reactive, ref, toRef } from "vue";
 import type { TPerson } from "../../../domain/contract/i-types";
 import { PersonFormProps } from "../../components/user-form/user-form";
 import CreateUserController from "../../../domain/classes/create-user-controller";
+import router from "../../../../../router";
 
 const props = defineProps(PersonFormProps);
 
@@ -154,18 +165,10 @@ const personID = toRef(props, "id");
 
 const createUserController = reactive(new CreateUserController(personID.value));
 
-const createPerson = () => {
-  createUserController.createNewPerson(person.value);
-};
-
-const editPerson = async () => {
-  await createUserController.editPerson(personID.value!, person.value);
-};
-
 const person = ref<TPerson>(createUserController.user);
 
 onMounted(async () => {
-  person.value = await createUserController.getPersonForEdit(personID.value!);
+  person.value = await createUserController.getPersonData(personID.value!);
 });
 </script>
 
