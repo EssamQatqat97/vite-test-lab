@@ -119,24 +119,13 @@
       </div>
       <div class="pt-4">
         <button
-          v-if="isNew"
-          @click="createUserController.createNewPerson(person)"
-          type="submit"
-          :disabled="createUserController.isBusy"
-          class="w-full flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
-        >
-          <span>Create Person</span>
-        </button>
-        <button
-          v-else
           @click="
             async () => {
               try {
-                await createUserController.editPerson(personID!, person);
-                console.log('update complete successfully');
+                await createUserController.createNewPerson(person);
                 router.push('/');
               } catch (error) {
-                console.log('Update is incomplete du to', error);
+                console.log(error);
               }
             }
           "
@@ -144,7 +133,7 @@
           :disabled="createUserController.isBusy"
           class="w-full flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300"
         >
-          <span>Edit Person</span>
+          <span>Create Person</span>
         </button>
       </div>
     </div>
@@ -152,24 +141,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRef } from "vue";
-import type { TPerson } from "../../../domain/contract/i-types";
-import { PersonFormProps } from "../../components/user-form/user-form";
-import CreateUserController from "../../../domain/classes/create-user-controller";
-import router from "../../../../../router";
+import { reactive, ref, toRefs } from "vue";
+import { PersonFormProps } from "./create-user-form";
+import CreateUserController from "@app/domain/classes/create-user-controller";
+import router from "@root/router";
 
 const props = defineProps(PersonFormProps);
 
-const formTitle = toRef(props, "formTitle");
-const personID = toRef(props, "id");
-
+const { formTitle, id: personID = ref("0") } = toRefs(props);
 const createUserController = reactive(new CreateUserController(personID.value));
 
-const person = ref<TPerson>(createUserController.user);
-
-onMounted(async () => {
-  person.value = await createUserController.getPersonData(personID.value!);
-});
+const person = createUserController.user;
 </script>
 
 <style scoped></style>

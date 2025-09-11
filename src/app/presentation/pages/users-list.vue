@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 import { defineAsyncComponent, onMounted, ref } from "vue";
-import ListController from "../../domain/classes/list-controller";
+import ListController from "@app/domain/classes/list-controller";
 
 const listController = ref(new ListController(0, 5));
 
@@ -100,7 +100,9 @@ onMounted(() => {
   listController.value.main(); // fetch after component is mounted
 });
 
-const Spinner = defineAsyncComponent(() => import("../components/spinner.vue"));
+const Spinner = defineAsyncComponent(
+  () => import("@app/presentation/components/spinner.vue")
+);
 </script>
 
 <style scoped>

@@ -1,11 +1,12 @@
-import ListController from "../app/domain/classes/list-controller";
+import { describe, it, test } from "vitest";
+import ListController from "@app/domain/classes/list-controller";
 
 const listController = new ListController();
 describe("getFullName", () => {
   it("returns the correct full name", () => {
-    const person = { firstName: "Khaled", lastName: "Qad" };
+    const person = { firstName: "Khaled", lastName: "Obaid" };
     expect(listController.getFullName(person.firstName, person.lastName)).toBe(
-      "Khaled Qad"
+      "Khaled Obaid"
     );
   });
   test("instance the method it self", () => {

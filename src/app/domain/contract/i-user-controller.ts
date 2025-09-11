@@ -1,9 +1,9 @@
 import type { TPerson } from "./i-types";
 
-interface ICreateUserController {
+interface IUserController {
   id: string;
   user: TPerson;
   isBusy: boolean;
 }
 
-export type { ICreateUserController };
+export type { IUserController };

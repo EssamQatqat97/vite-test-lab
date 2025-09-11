@@ -50,16 +50,16 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, toRef } from "vue";
-import type { TPerson } from "../../../domain/contract/i-types";
+import type { TPerson } from "@app/domain/contract/i-types";
 import { PersonInfoProps } from "../user-info/user-info";
-import CreateUserController from "../../../domain/classes/create-user-controller";
+import EditUserController from "@app/domain/classes/edit-user-controller";
 
 const props = defineProps(PersonInfoProps);
 
 const infoTitle = toRef(props, "infoTitle");
 const personID = toRef(props, "id");
 
-const createUserController = reactive(new CreateUserController(personID.value));
+const createUserController = reactive(new EditUserController(personID.value));
 
 const person = ref<TPerson>(createUserController.user);
 

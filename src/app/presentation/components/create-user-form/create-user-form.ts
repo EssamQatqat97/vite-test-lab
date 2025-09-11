@@ -3,6 +3,5 @@ export const PersonFormProps = {
     type: String,
     default: "Form Title",
   },
-  isNew: Boolean,
   id: String,
 };

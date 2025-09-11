@@ -23,7 +23,7 @@ const deletePersons = async (ids: string[]) => {
 
 //create person function
 const createPerson = async (person: TPerson) => {
-  person.id = Math.ceil(Math.random() * 10).toString();
+  person.id = Math.ceil(Math.random() * 200).toString();
   let now = new Date();
   person.createdAt = now.toISOString();
   try {

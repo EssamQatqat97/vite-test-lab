@@ -1,12 +1,13 @@
 <template>
-  <user-form :is-new="true" :form-title="'Create new USER'" />
+  <create-user-form :form-title="'Create new USER'" />
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent } from "vue";
 
-const UserForm = defineAsyncComponent(
-  () => import("../components/user-form/user-form.vue")
+const CreateUserForm = defineAsyncComponent(
+  () =>
+    import("@app/presentation/components/create-user-form/create-user-form.vue")
 );
 </script>
 

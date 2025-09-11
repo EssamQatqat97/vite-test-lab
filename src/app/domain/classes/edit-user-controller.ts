@@ -1,36 +1,20 @@
-import type { ICreateUserController } from "../contract/i-create-user-controller";
+import type { IUserController } from "../contract/i-user-controller";
 import type { TPerson } from "../contract/i-types";
-import { fetchPerson, createPerson } from "./service-mocker";
+import { fetchPerson, editPerson } from "./service-mocker";
+import UserController from "./user-controller";
 
 export const props = {
   limit: { type: Number, default: 10 }, //items per page
   pageIndex: { type: Number, default: 1 },
 };
 
-export default class CreateUserController implements ICreateUserController {
-  id: string;
-  user: TPerson;
-  isBusy: boolean;
-
+export default class EditUserController
+  extends UserController
+  implements IUserController
+{
   //---------------------- constructor -----------------------
   constructor(id: string = "0") {
-    this.id = id;
-    this.isBusy = false;
-    this.user = {
-      id: "",
-      firstName: "",
-      lastName: "",
-      age: "",
-      email: "",
-      phone: "",
-      address: {
-        street: "",
-        city: "",
-        country: "",
-      },
-      createdAt: "",
-      updatedAt: "",
-    };
+    super(id);
   }
   async getPersonData(personID: string) {
     this.isBusy = true;
@@ -39,10 +23,9 @@ export default class CreateUserController implements ICreateUserController {
     this.isBusy = false;
     return result;
   }
-  async createNewPerson(person: TPerson) {
+  async editPerson(id: string, person: TPerson, delay: number = 1) {
     this.isBusy = true;
-    const result: TPerson = await createPerson(person); //fetchPersons(pageIndex, limit);
-    this.user = result;
+    await editPerson(id, person, delay);
     this.isBusy = false;
   }
 }
