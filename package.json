@@ -13,7 +13,7 @@
     "test:coverage": "vitest --coverage",
     "safe-build": "vitest run && npm run build",
     "start-back-end": "json-server --watch db.json --port 3000",
-    "test:with-backend": "start-server-and-test start-back-end http://localhost:3000 test"
+    "test:with-backend": "start-server-and-test start-back-end http://0.0.0.0:3000 test"
   },
   "repository": {
     "type": "git",
