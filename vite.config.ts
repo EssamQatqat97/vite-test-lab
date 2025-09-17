@@ -13,19 +13,19 @@ export default defineConfig({
       "@root": path.relative(__dirname, "./"),
     },
   },
-  build: {
-    //   lib: {
-    //     entry: resolve(__dirname, "src/shared.ts"),
-    //     formats: ["es"],
-    //   },
-    rollupOptions: {
-      external: ["vue"],
-      output: {
-        globals: {
-          vue: "Vue",
-        },
-      },
-      //   },
-    },
-  },
+  // build: {
+  //      lib: {
+  //        entry: resolve(__dirname, "src/shared.ts"),
+  //        formats: ["es"],
+  //      },
+  //   rollupOptions: {
+  //     external: ["vue"],
+  //     output: {
+  //       globals: {
+  //         vue: "Vue",
+  //       },
+  //     },
+  //        },
+  //   },
+  // },
 });
