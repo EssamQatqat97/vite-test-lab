@@ -23,8 +23,8 @@ export default defineConfig({
     environment: "jsdom",
     include: ["src/**/*.{coca,test,spec}.ts"],
     // setupFiles: [ "@app/../src/__tests__/fullName.spec.ts"],
-    css: true,
-    testTimeout: 3000,
+    // css: true,
+    // testTimeout: 3000,
     reporters: reporterSet, // ['tap'] ['dot'] ['json'] ['junit'] ['default']['verbose']
   },
 });
