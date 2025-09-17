@@ -15,10 +15,10 @@ export default defineConfig({
     },
   },
   build: {
-  //   lib: {
-  //     entry: resolve(__dirname, "src/shared.ts"),
-  //     formats: ["es"],
-  //   },
+    //   lib: {
+    //     entry: resolve(__dirname, "src/shared.ts"),
+    //     formats: ["es"],
+    //   },
     rollupOptions: {
       external: ["vue"],
       output: {
@@ -26,6 +26,7 @@ export default defineConfig({
           vue: "Vue",
         },
       },
-  //   },
+      //   },
+    },
   },
 });
