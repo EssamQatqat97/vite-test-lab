@@ -41,7 +41,9 @@ describe("service-mocker", () => {
       // Assert that the function returned the expected mock data
       expect(result).toEqual(mockPerson);
       // Assert that axios.get was called with the correct URL
-      expect(axios.get).toHaveBeenCalledWith("http://0.0.0.0:3001/persons/1");
+      expect(axios.get).toHaveBeenCalledWith(
+        "http://20.233.121.78:3001/persons/1"
+      );
     });
 
     it("should return null if the API call fails", async () => {
