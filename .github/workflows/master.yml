@@ -44,8 +44,6 @@ jobs:
       - name: Run tests (with json-server)
         run: npm run test:with-backend
 
-      - name: Build project
-        run: npm run build:prod
 
   docker:
     runs-on: ubuntu-latest
@@ -65,4 +63,18 @@ jobs:
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/poc-node:latest
 
-  # Add more steps as needed, e.g., push to a container registry, deploy, etc.
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          # Create this secret with output of: 
+          # az ad sp create-for-rbac --name github-deploy --sdk-auth
+
+      - name: Restart ACI
+        run: |
+          az container restart \
+            --resource-group RG-Cubes-POC-DEV \
+            --name cubes-poc-dev
