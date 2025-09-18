@@ -21,7 +21,7 @@ on:
 # if you are running action use action, if you run a command-line command use run
 
 jobs:
-  build:
+  test:
     # for testing on multiple OS
     runs-on: ${{matrix.os}}
     strategy:
@@ -42,10 +42,7 @@ jobs:
         run: npm install
 
       - name: Run tests (with json-server)
-        run: npm run test:with-backend
-
-      - name: Build project
-        run: npm run build:prod
+        run: npm run test:with-backend &
 
   docker:
     runs-on: ubuntu-latest
@@ -65,4 +62,19 @@ jobs:
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/poc-node:latest
 
-  # Add more steps as needed, e.g., push to a container registry, deploy, etc.
+  deploy:
+    needs: [test, docker]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          # Create this secret with output of:
+          # az ad sp create-for-rbac --name github-deploy --sdk-auth
+
+      - name: Restart ACI
+        run: |
+          az container restart \
+            --resource-group RG-Cubes-POC-DEV \
+            --name cubes-poc-dev
