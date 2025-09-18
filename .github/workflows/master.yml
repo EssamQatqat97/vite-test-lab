@@ -78,3 +78,5 @@ jobs:
           az container restart \
             --resource-group RG-Cubes-POC-DEV \
             --name cubes-poc-dev
+
+
