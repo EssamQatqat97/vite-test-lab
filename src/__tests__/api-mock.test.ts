@@ -42,7 +42,7 @@ describe("service-mocker", () => {
       expect(result).toEqual(mockPerson);
       // Assert that axios.get was called with the correct URL
       expect(axios.get).toHaveBeenCalledWith(
-        "http://20.233.121.78:3001/persons/1"
+        "http://cubes-poc-dev.a3g8hbhub9f6gndj.uaenorth.azurecontainer.io:3001/persons/1"
       );
     });
 

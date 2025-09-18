@@ -10,7 +10,9 @@ axios.interceptors.request.use(async (config) => {
 const deletePersons = async (ids: string[]) => {
   try {
     const deletionPromises = ids.map((id) =>
-      axios.delete(`http://20.233.121.78:3001/persons/${id}`)
+      axios.delete(
+        `http://cubes-poc-dev.a3g8hbhub9f6gndj.uaenorth.azurecontainer.io:3001/persons/${id}`
+      )
     );
     const responses = await Promise.all(deletionPromises);
     console.log(`Successfully deleted ${responses.length} persons.`);
@@ -27,10 +29,13 @@ const createPerson = async (person: TPerson) => {
   let now = new Date();
   person.createdAt = now.toISOString();
   try {
-    const response = await axios.post("http://20.233.121.78:3001/persons", {
-      ...person,
-      createdAt: new Date().toISOString(),
-    });
+    const response = await axios.post(
+      "http://cubes-poc-dev.a3g8hbhub9f6gndj.uaenorth.azurecontainer.io:3001/persons",
+      {
+        ...person,
+        createdAt: new Date().toISOString(),
+      }
+    );
     return response.data; // returns the new person with id assigned by json-server
   } catch (error) {
     console.error("Error creating person:", error);
@@ -61,7 +66,7 @@ const editPerson = (
     setTimeout(async () => {
       try {
         const response = await axios.put<TPerson>(
-          `http://20.233.121.78:3001/persons/${id}`,
+          `http://cubes-poc-dev.a3g8hbhub9f6gndj.uaenorth.azurecontainer.io:3001/persons/${id}`,
           updates
         );
         resolve(response.data); // return updated person
@@ -75,9 +80,12 @@ const editPerson = (
 
 const fetchPersons = async (page = 1, limit = 10) => {
   try {
-    const response = await axios.get("http://20.233.121.78:3001/persons", {
-      params: { _page: page, _per_page: limit },
-    });
+    const response = await axios.get(
+      "http://cubes-poc-dev.a3g8hbhub9f6gndj.uaenorth.azurecontainer.io:3001/persons",
+      {
+        params: { _page: page, _per_page: limit },
+      }
+    );
     console.log(response.data.data);
     return {
       data: response.data.data,
@@ -92,7 +100,9 @@ const fetchPersons = async (page = 1, limit = 10) => {
 // fetch one user
 const fetchPerson = async (id: string) => {
   try {
-    const response = await axios.get(`http://20.233.121.78:3001/persons/${id}`);
+    const response = await axios.get(
+      `http://cubes-poc-dev.a3g8hbhub9f6gndj.uaenorth.azurecontainer.io:3001/persons/${id}`
+    );
     // Return the single person object
     return response.data;
   } catch (error) {
