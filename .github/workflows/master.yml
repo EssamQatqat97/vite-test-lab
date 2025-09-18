@@ -21,7 +21,7 @@ on:
 # if you are running action use action, if you run a command-line command use run
 
 jobs:
-  build:
+  test:
     # for testing on multiple OS
     runs-on: ${{matrix.os}}
     strategy:
@@ -42,8 +42,7 @@ jobs:
         run: npm install
 
       - name: Run tests (with json-server)
-        run: npm run test:with-backend &
-
+        run: npm run test:with-backend
 
   docker:
     runs-on: ubuntu-latest
@@ -64,14 +63,14 @@ jobs:
           tags: ${{ vars.DOCKERHUB_USERNAME }}/poc-node:latest
 
   deploy:
-    needs: docker
+    needs: [test, docker]
     runs-on: ubuntu-latest
     steps:
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          # Create this secret with output of: 
+          # Create this secret with output of:
           # az ad sp create-for-rbac --name github-deploy --sdk-auth
 
       - name: Restart ACI
