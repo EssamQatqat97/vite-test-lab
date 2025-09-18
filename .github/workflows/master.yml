@@ -65,6 +65,11 @@ jobs:
   deploy:
     needs: [test, docker]
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+  # If your federated credential uses the "Environment" subject type, also set:
+  # environment: dev   # <- must match the Entra federated credential environment name
     steps:
       - uses: actions/checkout@v4
       
