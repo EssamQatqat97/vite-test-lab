@@ -1,5 +1,5 @@
 <template>
-  Added In CI/CD
+  >>>>> CI/CD Demo with Ali
   <user-info
     :id="
       Array.isArray($route.query.id)
