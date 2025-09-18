@@ -64,6 +64,7 @@ jobs:
           tags: ${{ vars.DOCKERHUB_USERNAME }}/poc-node:latest
 
   deploy:
+    needs: docker
     runs-on: ubuntu-latest
     steps:
       - name: Azure Login
@@ -78,4 +79,3 @@ jobs:
           az container restart \
             --resource-group RG-Cubes-POC-DEV \
             --name cubes-poc-dev
-
