@@ -94,7 +94,7 @@ const fetchPerson = async (id: string) => {
   try {
     const response = await axios.get(`0.0.0.0:3001/persons/${id}`);
     // Return the single person object
-    return response.data;
+    return response?.data;
   } catch (error) {
     console.error(`Error fetching person with ID ${id}:`, error);
     return null; // Return null or an appropriate fallback value
