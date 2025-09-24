@@ -12,8 +12,8 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "safe-build": "vitest run && npm run build",
-    "start-back-end": "json-server --watch db.json --port 3000",
-    "test:with-backend": "start-server-and-test start-back-end http://20.233.121.78:3000 test"
+    "start-back-end": "json-server db.json --port 3001",
+    "test:with-backend": "start-server-and-test start-back-end http://0.0.0.0:3001 test"
   },
   "repository": {
     "type": "git",
