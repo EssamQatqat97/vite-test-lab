@@ -25,6 +25,7 @@ jobs:
     # for testing on multiple OS
     runs-on: ${{matrix.os}}
     strategy:
+      fail-fast: true
       matrix:
         os: [ubuntu-latest, windows-2022, macos-latest]
 
