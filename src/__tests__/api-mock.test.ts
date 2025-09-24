@@ -41,14 +41,12 @@ describe("service-mocker", () => {
       // Assert that the function returned the expected mock data
       expect(result).toEqual(mockPerson);
       // Assert that axios.get was called with the correct URL
-      expect(axios.get).toHaveBeenCalledWith(
-        "http://cubes-poc-dev.a3g8hbhub9f6gndj.uaenorth.azurecontainer.io:3001/persons/1"
-      );
+      expect(axios.get).toHaveBeenCalledWith("0.0.0.0:3001/persons/1");
     });
 
     it("should return null if the API call fails", async () => {
       // Mock axios.get to reject with an error
-      vi.mocked(axios.get).mockRejectedValue(new Error("Network Error"));
+      vi.mocked(axios.get).mockRejectedValue(  new Error("Network Error"));
 
       // Call the function
       const result = await fetchPerson("999");
