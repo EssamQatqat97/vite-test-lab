@@ -4,7 +4,7 @@ import ListController from "@app/domain/classes/list-controller";
 const listController = new ListController();
 describe("getFullName", () => {
   it("returns the correct full name", () => {
-    const person = { firstName: "Khaled", lastName: "Obaid" };
+    const person = { firstName: "Khaled", lastName: "o" };
     expect(listController.getFullName(person.firstName, person.lastName)).toBe(
       "Khaled Obaid"
     );
