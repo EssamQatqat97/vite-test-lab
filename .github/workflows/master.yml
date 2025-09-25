@@ -11,8 +11,6 @@ on:
   pull_request:
     branches: [master]
 
-# build is the name of the job, you can name it anything
-
 # runs on ubuntu, Windows and MacOS are available, you can choose any of them
 
 # actions is the offical GitHub account for actions, checkout is the name of the action it is defined as a repository which contain action.yml file
