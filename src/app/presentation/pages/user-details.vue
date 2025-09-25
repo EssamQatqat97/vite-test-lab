@@ -1,5 +1,5 @@
 <template>
-  >>>>> CI/CD Test Text To be in Demo <<<<<
+  >>>>> CI/CD Test Text To be in Demo #2 <<<<<
   <user-info
     :id="
       Array.isArray($route.query.id)
